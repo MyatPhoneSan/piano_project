@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="feather-icons-web/feather.css">
+
+    <title>Piano Project</title>
+    <style>
+        *{
+            padding: 0;
+            margin:0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: black;
+        }
+        .div{
+            width:602px;
+            height: 180px;
+            background-color: black;
+            border:1px solid black;
+            position: absolute;
+            left:500px;
+            top:50px;
+            box-shadow: 0 0 10px #d5d5d5;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .div .rect:hover{
+            cursor: pointer;
+            background-color: white;
+
+        }
+        .div .rect{
+            margin:0;
+            border:1px solid black;
+            width: 75px;
+            height: 180px;
+            background-color: #B1B1B1;
+            float: left;
+            text-align: center;
+            line-height: 100px;
+            border-bottom: 7px solid black;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        #cords{
+            position: absolute;
+            top:140px;
+            left: 30px;
+            border:0;
+            border-radius: 10px;
+            padding: 5px 10px;
+            width: 350px;
+            background-color: #d5d5d5;
+        }
+        .btn{
+            position: absolute;
+            top:140px;
+            left: 400px;
+            border-radius: 10px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            background-color: #d5d5d5;
+
+        }
+        .btn:hover{
+            cursor: pointer;
+        }
+        .border{
+            width: 12px;
+            height:90px;
+            background-color: black;
+
+            position: relative;
+            left: 68px;
+
+        }
+        #list{
+            position: relative;
+            top:220px;
+            left: 620px;
+            background-color: #d5d5d5;
+           display: inline-block;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #73c7ed;
+width: 400px;
+            text-align: center;
+        }
+
+        #list:before{
+            content: 'Recorded Audio';
+            font-weight: bolder;
+            font-size: 20px;
+
+        }
+        #list li{
+            display: flex;
+            justify-content: space-between;
+            margin-top: 7px;
+
+        }
+        .btn-replay{
+display: flex;
+            justify-content: space-between;
+            border: 0;
+            font-size: 20px;
+            border-radius: 50%;
+
+        }
+        .btn-replay:hover{
+            cursor: pointer;
+            background-color: #f02849;
+        }
+        .feather-save{
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .song-text{
+            color: black;
+            background-color: #d5d5d5;
+            border-radius: 10px;
+            border:1px solid black;
+            width: 350px;
+            height: 350px;
+            padding: 10px;
+            position: fixed;
+            top:200px;
+            left: 30px;
+
+        }
+    </style>
+</head>
+<body>
+<input type="text" id="cords">
+<button onclick="saveCord()" class="btn">Save<i class="feather-save"></i></button>
+<br>
+<br>
+
+<div class="div">
+
+    <div class="rect" onclick="run('C4')"><div class="border"></div>C4</div>
+<div class="rect" onclick="run('D4')"><div class="border"></div>D4 </div>
+<div class="rect" onclick="run('E4')"><div class="border"></div>E4</div>
+<div class="rect" onclick="run('F4')"><span style="position:relative; bottom: -90px;">F4</span></div>
+<div class="rect" onclick="run('G4')"><div class="border"></div>G4</div>
+<div class="rect" onclick="run('A4')"><div class="border"></div>A4</div>
+<div class="rect" onclick="run('B4')"><div class="border"></div>B4</div>
+<div class="rect" onclick="run('C5')"><span style="position:relative; bottom: -90px;">C5</span></div>
+</div>
+<ul id="list"></ul>
+<div class="song-text">
+<h3 style="text-align: center">Señorita Piano</h3><p>I love it when you call me señorita<br>
+    B4 C5 B4 A4 B4 C5 A4 E4 C5 B4 G4<br>
+    <br>
+    I wish I could pretend I didn't need you<br>
+    B4 C5 B4 A4 B4 C5 A4 E4 C5 B4 G4<br>
+    <br>
+    But every touch is ooh la la la<br>
+    B4 C5 B4 A4 G4 F4 C5 C5 C5<br>
+    <br>
+    It's true, la la la<br>
+    G4 F4 C5 C5 C5<br>
+    <br>
+    Ooh, I should be running, ohh<br>
+    B4 C5 B4 C5 B4 G4 B4<br>
+    <br>
+    Ooh, you know I love it when you call me señorita<br>
+    C5 B4 C5 B4 A4 A4 B4 C5 A4 E4 C5 B4 G4</p>
+</div>
+<script>
+
+    let cords=document.getElementById("cords");
+    let pianoMemory=[];
+    let list=document.getElementById("list");
+    function run(x) {
+        const a=new Audio(`sound/${x}.mp3`);
+        a.play();
+        cords.value+=x+" ";
+        console.log(`U play ${x} key`);
+
+    }
+
+    function saveCord(){
+        let input=cords.value;
+        pianoMemory.push(input);
+        console.log(`${input} is save in memory`);
+        cords.value="";
+        list.innerHTML="";
+        pianoMemory.map(function (el,index) {
+            list.innerHTML+=`<li>${el}&nbsp;&nbsp;&nbsp; <button class="btn-replay" onclick="rePlay(${index})"><i class="feather-play-circle"></i></button></li>`
+        })
+    }
+    let m=["C4","E4","B4"];
+
+    function runMemory(arr,delay=900){
+        let x=delay;
+        arr.map(function (el,index) {
+            setTimeout(run,x,el);
+            x+=delay;
+        });
+    }
+    function rePlay(x){
+        let current=pianoMemory[x].split(" ");
+        current.pop();
+
+        runMemory(current);
+    }
+    document.addEventListener("keyup",function (e) {
+    console.log(e.keyCode);
+    let current=e.keyCode;
+    if (current==65){
+        run('C4');
+    }
+    else if(current==83){
+        run('D4');
+    }
+    else if(current==68){
+        run('E4');
+    }
+    else if(current==70){
+        run('F4');
+    }
+    else if(current==74){
+        run('G4');
+    }
+    else if(current==75){
+        run('A4');
+    }
+    else if(current==76){
+        run('B4');
+    }
+    else if(current==186){
+        run('C5');
+    }
+
+    })
+</script>
+</body>
+</html>
